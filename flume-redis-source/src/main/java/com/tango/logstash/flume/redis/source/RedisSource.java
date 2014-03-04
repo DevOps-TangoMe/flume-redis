@@ -169,6 +169,11 @@ public class RedisSource extends AbstractPollableSource {
                 for (byte[] eventSource : eventsSource) {
                     try {
                         Event flumeEvent = serializer.parseEvent(eventSource);
+                        
+                        if(flumeEvent != null && logger.isTraceEnabled()) {
+                        	logger.trace("Event parsed as :" + flumeEvent.toString());
+                        }
+                        
                         flumeEvents.add(flumeEvent);
                     } catch (RedisSerializerException e) {
                         logger.error("Could not parse event [" + new String(eventSource) + "]", e);

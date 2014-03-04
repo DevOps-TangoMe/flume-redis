@@ -45,6 +45,7 @@ public class LogstashDeSerializer implements Serializer {
     public static final String FIELD_AT_SOURCE = "@source";
     public static final String FIELD_AT_VERSION = "@version";
     public static final String FIELD_TAGS = "tags";
+    public static final String FIELD_MESSAGE = "message";
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -70,13 +71,11 @@ public class LogstashDeSerializer implements Serializer {
 
         try {
             LogstashEvent logstashEvent = objectMapper.readValue(eventSource, LogstashEvent.class);
-
-            String body = "";
-            if (StringUtils.isNotBlank(logstashEvent.getMessage())) {
-                body = logstashEvent.getMessage();
-            }
-
             Map<String, String> headers = new HashMap<String, String>();
+
+            if (StringUtils.isNotBlank(logstashEvent.getMessage())) {
+                headers.put(FIELD_MESSAGE, logstashEvent.getMessage());
+            }
 
             if (logstashEvent.getFields() != null) {
                 headers.putAll(logstashEvent.getFields());
@@ -112,7 +111,7 @@ public class LogstashDeSerializer implements Serializer {
                 headers.put(FIELD_TAGS, StringUtils.join(logstashEvent.getTags(), ","));
             }
             
-            flumeEvent = EventBuilder.withBody(body.getBytes(), headers);
+            flumeEvent = EventBuilder.withBody(eventSource, headers);
 
         } catch (JsonParseException e) {
             throw new RedisSerializerException("Could not parse event: [" + new String(eventSource) + "]", e);

@@ -17,6 +17,7 @@ package com.tango.logstash.flume.redis.source.serializer;
 
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.flume.Event;
 import org.junit.Assert;
 import org.junit.Test;
@@ -33,11 +34,9 @@ public class TestLogstashDeSerializer {
     public void testNewLogstashMessageFormat() throws RedisSerializerException {
         final String EXPECTED_VERSION = "1";
         final String EXPECTED_TYPE = "authConsumer";
+        final String EXPECTED_MESSAGE = "This is the message";
 
-        final String TEST_INPUT_EVENT = new String("{\"message\":\"111.111.111.11 - - "
-                + "[06/Feb/2014:02:36:56 +0000] "
-                + "\\\"POST /facilitator/rest/validation/v1/tango_validation/4564514f4gh4tr48ds "
-                + "HTTP/1.1\\\" 200 304 B \\\"proxy-handler-worker-4\\\" 8 ms us0101bac020.tangome.gbl\","
+        final String TEST_INPUT_EVENT = new String("{\"message\":\"" + EXPECTED_MESSAGE + "\","
                 + "\"@timestamp\":\"2012-12-12T06:45:06.850Z\"," + "\"@version\":\"" + EXPECTED_VERSION + "\","
                 + "\"type\":\"" + EXPECTED_TYPE + "\"," + "\"tags\":[\"authConsumer\"],"
                 + "\"host\":\"us0101bac020.tangome.gbl\"," + "\"path\":\"/local/authConsumer/logs/access.log\"}");
@@ -53,8 +52,14 @@ public class TestLogstashDeSerializer {
         Assert.assertTrue(headers.containsKey(LogstashDeSerializer.FIELD_AT_SOURCE_PATH));
         Assert.assertTrue(headers.containsKey(LogstashDeSerializer.FIELD_AT_VERSION));
         Assert.assertTrue(headers.containsKey(LogstashDeSerializer.FIELD_TAGS));
-        
+        Assert.assertTrue(headers.containsKey(LogstashDeSerializer.FIELD_MESSAGE));
+
+        Assert.assertNotNull(parsedEvent.getBody());
+        Assert.assertTrue(StringUtils.isNotBlank(new String(parsedEvent.getBody())));
+        Assert.assertEquals(TEST_INPUT_EVENT, new String(parsedEvent.getBody()));
+
         Assert.assertEquals(EXPECTED_VERSION, headers.get(LogstashDeSerializer.FIELD_AT_VERSION));
         Assert.assertEquals(EXPECTED_TYPE, headers.get(LogstashDeSerializer.FIELD_AT_TYPE));
+        Assert.assertEquals(EXPECTED_MESSAGE, headers.get(LogstashDeSerializer.FIELD_MESSAGE));
     }
 }
