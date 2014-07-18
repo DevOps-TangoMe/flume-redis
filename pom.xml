@@ -49,7 +49,7 @@
 		<!-- Tests to run -->
 		<test.include.pattern>**/Test*.java</test.include.pattern>
 
-		<flume.version>1.4.0-cdh4.5.0</flume.version>
+		<flume.version>1.5.0-cdh5.1.0</flume.version>
 		<jedis.version>2.1.0</jedis.version>
 		<junit.version>4.10</junit.version>
 		<jackson.version>1.9.3</jackson.version>
