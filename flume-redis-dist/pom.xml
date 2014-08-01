@@ -91,7 +91,7 @@
 						<defineStatement>_unpackaged_files_terminate_build 0</defineStatement>
 					</defineStatements>
 					<requires>
-						<require>flume-ng &gt; 1.4.0+55</require>
+						<require>flume-ng &gt; 1.5.0+cdh5.1.0+10</require>
 					</requires>
 					<mappings>
 						<mapping>
