@@ -58,10 +58,10 @@ public class LogstashSerializer implements Serializer {
 	public void configure(ComponentConfiguration conf) {
 	}
 
-	public LogstashEvent convertToLogstashEvent(Event event) {
+	public LogstashEvent convertToLogstashEvent(Event event) throws RedisSerializerException {
 		
 		if (event == null) {
-			throw new IllegalArgumentException("Event cannot be null");
+			throw new RedisSerializerException("Event cannot be null");
 		}
 		
 		LogstashEvent logstashEvent = new LogstashEvent();
@@ -179,7 +179,7 @@ public class LogstashSerializer implements Serializer {
 		byte[] result = null;
 
 		if (event == null) {
-			throw new IllegalArgumentException("Event cannot be null");
+			throw new RedisSerializerException("Event cannot be null");
 		}
 
 		LogstashEvent logstashEvent = convertToLogstashEvent(event);

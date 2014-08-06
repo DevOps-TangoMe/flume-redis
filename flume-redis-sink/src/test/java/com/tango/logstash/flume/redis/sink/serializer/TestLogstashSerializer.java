@@ -38,14 +38,14 @@ import com.tango.logstash.flume.redis.sink.serializer.Serializer;
 
 public class TestLogstashSerializer {
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = RedisSerializerException.class)
 	public void nullEventTest() throws RedisSerializerException {
 
 		Serializer serializer = new LogstashSerializer();
 		serializer.serialize(null);
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = RedisSerializerException.class)
 	public void nullLogstashEventTest() throws RedisSerializerException {
 		
 		LogstashSerializer serializer = new LogstashSerializer();

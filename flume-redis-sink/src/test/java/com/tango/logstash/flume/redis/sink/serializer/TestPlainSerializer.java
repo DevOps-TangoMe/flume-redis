@@ -29,7 +29,7 @@ import com.tango.logstash.flume.redis.sink.serializer.Serializer;
 
 public class TestPlainSerializer {
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = RedisSerializerException.class)
 	public void nullEventTest() throws RedisSerializerException {
 
 		Serializer serializer = new PlainSerializer();

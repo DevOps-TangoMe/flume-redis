@@ -22,16 +22,16 @@ import org.apache.flume.conf.ComponentConfiguration;
 public class PlainSerializer implements Serializer {
 
 	public void configure(Context context) {
-    }
+	}
 
 	public void configure(ComponentConfiguration conf) {
-    }
-	
+	}
+
 	public byte[] serialize(Event event) throws RedisSerializerException {
-		if(event == null) {
-			throw new IllegalArgumentException("Event cannot be null");
+		if (event == null) {
+			throw new RedisSerializerException("Event cannot be null");
 		}
-		
-	    return event.getBody();
-    }
+
+		return event.getBody();
+	}
 }
